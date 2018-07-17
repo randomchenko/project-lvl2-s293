@@ -10,5 +10,5 @@ test('json', () => {
 
 test('yml', () => {
   const expected2 = fs.readFileSync(`${path}2/expected`).toString();
-  expect(genDiff(`${path}3/before.yml`, `${path}2/after.yml`)).toBe(expected2);
+  expect(genDiff(`${path}2/before.yml`, `${path}2/after.yml`)).toBe(expected2);
 });
