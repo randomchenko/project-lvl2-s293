@@ -1,0 +1,3 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/8fdc6646130c6b906e21/maintainability)](https://codeclimate.com/github/randomchenko/project-lvl2-s293/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/8fdc6646130c6b906e21/test_coverage)](https://codeclimate.com/github/randomchenko/project-lvl2-s293/test_coverage)
+[![Build Status](https://travis-ci.org/randomchenko/project-lvl2-s293.svg?branch=master)](https://travis-ci.org/randomchenko/project-lvl2-s293)
