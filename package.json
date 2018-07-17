@@ -1,0 +1,40 @@
+{
+  "name": "differences_calculator",
+  "version": "1.0.1",
+  "description": "Сomparing two files and displaying differences.",
+  "main": "dist/bin/gendiff.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "babel-node": "babel-node",
+    "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
+    "prepublishOnly": "npm run build",
+    "eslint": "eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/randomchenko/project-lvl2-s293.git"
+  },
+  "bin": {
+    "gendiff": "dist/bin/gendiff.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "randomchenko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/randomchenko/project-lvl2-s293/issues"
+  },
+  "homepage": "https://github.com/randomchenko/project-lvl2-s293#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.6",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^5.1.0",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-babel": "^5.1.0",
+    "eslint-plugin-import": "^2.13.0"
+  }
+}
