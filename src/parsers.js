@@ -1,14 +1,14 @@
 import { safeLoad } from 'js-yaml';
 import { parse as iniParse } from 'ini';
 
-const parse = {
+const parsers = {
   ini: iniParse,
   json: JSON.parse,
   yml: safeLoad,
 };
 
 export default format => (data) => {
-  const parser = parse[format];
+  const parser = parsers[format];
   if (!parser) {
     throw new Error(`This format ${format} isn't known.`);
   }

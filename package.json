@@ -1,7 +1,7 @@
 {
   "name": "differences_calculator",
-  "version": "1.0.5",
-  "description": "Сomparing two files and displaying differences.",
+  "version": "1.1.0",
+  "description": "",
   "main": "dist/bin/gendiff.js",
   "scripts": {
     "test": "jest",
@@ -27,30 +27,28 @@
     "url": "https://github.com/randomchenko/project-lvl2-s293/issues"
   },
   "homepage": "https://github.com/randomchenko/project-lvl2-s293#readme",
-  "devDependencies": {
-    "eslint": "^5.1.0",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.6",
-    "babel-jest": "^23.4.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-0": "^6.24.1",
-    "eslint-config-airbnb-base": "^13.0.0",
-    "eslint-plugin-babel": "^5.1.0",
-    "eslint-plugin-import": "^2.13.0",
-    "jest": "^23.4.1",
-    "jest-cli": "^23.4.1"
+  "dependencies": {
+    "commander": "^2.15.1",
+    "ini": "^1.3.5",
+    "js-yaml": "^3.12.0",
+    "lodash": "^4.17.10"
   },
   "jest": {
     "testEnvironment": "node"
   },
-  "dependencies": {
-    "commander": "^2.16.0",
-    "differences_calculator": "^1.0.5",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.5",
+    "babel-jest": "^23.2.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^5.0.1",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-babel": "^5.1.0",
+    "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jest": "^21.17.0",
-    "g": "^2.0.1",
-    "ini": "^1.3.5",
-    "js-yaml": "^3.12.0",
-    "lodash": "^4.17.10"
+    "jest": "^23.2.0",
+    "jest-cli": "^23.2.0"
   }
 }
