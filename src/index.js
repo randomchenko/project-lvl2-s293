@@ -37,10 +37,10 @@ const genDiff = (beforePath, afterPath) => {
 
   const format = path.extname(beforePath).slice(1);
 
-  const parser = getParser(format);
+  const parse = getParser(format);
 
-  const beforeData = parser(beforeText);
-  const afterData = parser(afterText);
+  const beforeData = parse(beforeText);
+  const afterData = parse(afterText);
   const difference = getDifference(beforeData, afterData);
   const result = difference.reduce((acc, line) => {
     const newLine = createString[line.status](line);
