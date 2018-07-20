@@ -2,51 +2,74 @@ import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
 import getParser from './parsers';
+import getRenderer from './renderers';
 
-const getDifference = (before, after) => {
-  const allKeys = _.union(Object.keys(before), Object.keys(after));
-  return allKeys.reduce((acc, key) => {
-    if (_.has(after, key) && _.has(before, key)) {
-      if (after[key] === before[key]) {
-        return [...acc, { key, value: before[key], status: 'ignored' }];
-      }
-      return [...acc, {
-        key,
-        oldValue: before[key],
-        newValue: after[key],
-        status: 'changed',
-      }];
-    }
-    if (_.has(after, key)) {
-      return [...acc, { key, value: after[key], status: 'added' }];
-    }
-    return [...acc, { key, value: before[key], status: 'removed' }];
-  }, []);
+const checkPresence = (before, after, key) => _.has(before, key) && _.has(after, key);
+
+const keyTypes = [
+  {
+    type: 'nested',
+    check: (before, after, key) => (_.isObject(before[key]) && _.isObject(after[key])
+      && !_.isArray(before[key]) && !_.isArray(after[key])),
+    process: (beforeVal, afterVal, func) => ({
+      children: func(beforeVal, afterVal),
+    }),
+  },
+  {
+    type: 'new',
+    check: (before, after, key) => (!_.has(before, key) && _.has(after, key)),
+    process: (beforeValue, afterValue) => ({
+      value: afterValue,
+    }),
+  },
+  {
+    type: 'unmodified',
+    check: (before, after, key) => (checkPresence(before, after, key)
+      && before[key] === after[key]),
+    process: beforeValue => ({
+      value: beforeValue,
+    }),
+  },
+  {
+    type: 'modified',
+    check: (before, after, key) => (checkPresence(before, after, key)
+      && before[key] !== after[key]),
+    process: (beforeValue, afterValue) => ({
+      oldValue: beforeValue,
+      newValue: afterValue,
+    }),
+  },
+  {
+    type: 'deleted',
+    check: (before, after, key) => (_.has(before, key) && !_.has(after, key)),
+    process: beforeValue => ({
+      value: beforeValue,
+    }),
+  },
+];
+
+const getDiffTree = (before, after) => {
+  const keysStatus = _.union(Object.keys(before), Object.keys(after));
+  return keysStatus.map((key) => {
+    const { type, process } = _.find(keyTypes, item => item.check(before, after, key));
+    const params = process(before[key], after[key], getDiffTree);
+    return { key, type, ...params };
+  });
 };
 
-const createString = {
-  added: ({ key, value }) => ` + ${key}: ${value}\n`,
-  removed: ({ key, value }) => ` - ${key}: ${value}\n`,
-  changed: ({ key, oldValue, newValue }) => ` + ${key}: ${newValue}\n - ${key}: ${oldValue}\n`,
-  ignored: ({ key, value }) => `   ${key}: ${value}\n`,
-};
+const genDiff = (beforePath, afterPath, format = 'tree') => {
+  const beforeText = fs.readFileSync(beforePath, 'utf-8');
+  const afterText = fs.readFileSync(afterPath, 'utf-8');
 
-const genDiff = (beforePath, afterPath) => {
-  const beforeText = fs.readFileSync(beforePath);
-  const afterText = fs.readFileSync(afterPath);
+  const extension = path.extname(beforePath).slice(1);
 
-  const format = path.extname(beforePath).slice(1);
-
-  const parse = getParser(format);
+  const parse = getParser(extension);
 
   const beforeData = parse(beforeText);
   const afterData = parse(afterText);
-  const difference = getDifference(beforeData, afterData);
-  const result = difference.reduce((acc, line) => {
-    const newLine = createString[line.status](line);
-    return `${acc}${newLine}`;
-  }, '');
-  return `{\n${result}}\n`;
+  const difference = getDiffTree(beforeData, afterData);
+  const render = getRenderer(format);
+  return render(difference);
 };
 
 export default genDiff;

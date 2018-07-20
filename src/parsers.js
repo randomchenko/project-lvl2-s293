@@ -1,5 +1,6 @@
 import { safeLoad } from 'js-yaml';
 import { parse as iniParse } from 'ini';
+import getHandlerByType from './utils';
 
 const parsers = {
   ini: iniParse,
@@ -7,10 +8,4 @@ const parsers = {
   yml: safeLoad,
 };
 
-export default format => (data) => {
-  const parser = parsers[format];
-  if (!parser) {
-    throw new Error(`This format ${format} isn't known.`);
-  }
-  return parser(data);
-};
+export default format => getHandlerByType(format, parsers);
