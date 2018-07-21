@@ -7,7 +7,7 @@ const stringify = (element) => {
   return `'${element}'`;
 };
 
-const makePrefix = path => (path.length < 1 ? path.join('.') : `${path.join('.')}.`);
+const makePrefix = path => (path.length === 0 ? path.join('.') : `${path.join('.')}.`);
 
 const createString = {
   new: ({ key, value }, path) => `Property '${makePrefix(path)}${key}' was added with ${stringify(value)} value`,
@@ -16,11 +16,11 @@ const createString = {
   nested: ({ children, key }, path, render) => render(children, [...path, key]),
 };
 
-const render = (diffs, path = []) => {
-  const changedElements = diffs.filter(item => item.type !== 'unmodified');
-  const reportElements = changedElements.reduce((acc, item) => {
-    const renderedItem = getHandlerByType(item.type, createString)(item, path, render);
-    return [...acc, renderedItem];
+const render = (diffs, arr = []) => {
+  const changedElements = diffs.filter(element => element.type !== 'unmodified');
+  const reportElements = changedElements.reduce((acc, element) => {
+    const renderedElements = getHandlerByType(element.type, createString)(element, arr, render);
+    return [...acc, renderedElements];
   }, []);
   return reportElements.join('\n');
 };
